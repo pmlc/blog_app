@@ -3,8 +3,13 @@ require 'rails_helper'
 RSpec.feature "Creating Articles" do
   
   before do
-    @john = User.create!(email: "john@example.com", password: "password")
-    login_as(@john)
+    visit "/"
+      
+    click_link "Sign up"
+    fill_in "Email", with: @john.email
+    fill_in "Password", with: @john.password
+    click_button "Log in"
+    
   end
   
   scenario "User creates a new article" do

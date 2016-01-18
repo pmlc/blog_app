@@ -4,7 +4,7 @@ RSpec.feature "Users sign-in" do
   before do
     @john = User.create!(email: "john@example.com", password: "password")
   end
-  
+     
   scenario "with valid credentials" do
     visit "/"
       
@@ -16,4 +16,5 @@ RSpec.feature "Users sign-in" do
     expect(page).to have_content("Signed in successfully.")
     expect(page).to have_content("Signed in as #{@john.email}")
   end
+  
 end
