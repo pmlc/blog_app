@@ -14,7 +14,7 @@ RSpec.feature "Users sign out" do
 
   scenario "signing out - after having signed in" do
     visit "/"
-    click_button "Sign out" 
+    click_link "Sign out" 
     expect(page).to have_content("Signed out successfully")
   end
 
