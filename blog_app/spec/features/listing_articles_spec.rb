@@ -8,8 +8,8 @@ RSpec.feature "Listing Articles" do
     @article1 = Article.create(title: "the first title", body: "body of first article", user: john)
     @article2 = Article.create(title: "the second title", body: "body of second article", user: john)
   end
-  
-  scenario "list all articles" do
+
+    scenario "list all articles - user logged in " do
     visit "/"
     expect(page).to have_content(@article1.title)
     expect(page).to have_content(@article1.body)
@@ -17,7 +17,15 @@ RSpec.feature "Listing Articles" do
     expect(page).to have_content(@article2.body)
     expect(page).to have_link(@article1.title)
     expect(page).to have_link(@article2.title)
+    expect(page).to have_link("New Article")
   end
+
+  scenario "list all articles - user NOT logged in " do
+    visit "/"
+    click_link "Sign out"
+    expect(page).not_to have_link("New Article")
+  end
+
   
 end
 
