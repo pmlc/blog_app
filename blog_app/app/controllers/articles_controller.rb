@@ -1,7 +1,6 @@
 class ArticlesController < ApplicationController
 before_action :authenticate_user!, only:[:new, :create, :edit, :update, :destroy]
 before_filter :set_article, only:[:show, :edit, :update, :destroy]
-# before_action :authenticate_same_user!, only[:edit, :update, :destroy]
 
   def index
     @articles = Article.all
@@ -26,19 +25,32 @@ before_filter :set_article, only:[:show, :edit, :update, :destroy]
   end
 
   def edit
+    if @article.user != current_user
+      flash[:danger] = "You can only edit yuor own article"
+      redirect_to root_path
+    end
   end
   
   def update
-    if @article.update(article_params)
-      flash[:success] = "Article has been updated"
-      redirect_to @article
+    if @article.user != current_user
+      flash[:danger] = "You can only edit yuor own article"
+      redirect_to root_path
     else
-      flash.now[:danger] = "Article has not been updated"
-      render :edit
+      if @article.update(article_params)
+       flash[:success] = "Article has been updated"
+       redirect_to @article
+      else
+        flash.now[:danger] = "Article has not been updated"
+        render :edit
+      end
     end
   end
   
   def destroy
+    if @article.user != current_user
+      flash[:danger] = "You can only delete yuor own article"
+      redirect_to article_path
+    end
     if @article.destroy
       flash[:success] = "Article has been deleted"
       redirect_to articles_path
@@ -54,5 +66,9 @@ before_filter :set_article, only:[:show, :edit, :update, :destroy]
   def article_params
     params.require(:article).permit(:title, :body)
   end
-  
+
+  def authenticate_same_user
+     return true 
+  end 
+
 end
