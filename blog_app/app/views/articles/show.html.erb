@@ -5,8 +5,8 @@
     <%= @article.created_at.strftime("%b %d, %Y") %>
   </div>
   
-  <div class="article-body">
-    <%= @article.body %>
+  <div class="article-body"> 
+    <%= simple_format(@article.body) %>
   </div>
 
   <% if user_signed_in? && current_user == @article.user  %>
